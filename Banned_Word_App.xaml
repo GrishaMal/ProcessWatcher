@@ -1,0 +1,83 @@
+﻿<Window x:Class="ProcessWatcher.Banned_Word_App"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProcessWatcher"
+        mc:Ignorable="d"
+        Title="Banned_Word_App" Height="450" Width="800">
+
+    <!--Мы подключаемся к ApplicationViewModel посредством DataContext в файле Banned_Word_App.xaml.cs -->
+    
+    <Window.Resources>
+        <Style TargetType="Button">
+            <Setter Property="MinWidth" Value="60" />
+            <Setter Property="Margin" Value="8" />
+        </Style>
+    </Window.Resources>
+
+
+        <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="50" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Массив BannWords объявлен в ApplicationViewModel.cs -->
+        <ListBox Grid.Row="0" Grid.Column="0" x:Name="usersListApp" ItemsSource="{Binding BannApps}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <!-- Appl - это свойство (не поле!) класса BannApp. И в этом свойстве как раз прописано OnPropertyChanged("Appl") -->
+                        <TextBlock Text="{Binding Appl}" FontSize="16" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <!-- Массив BannApps объявлен в ApplicationViewModel.cs -->
+        <ListBox Grid.Row="0" Grid.Column="1" x:Name="usersListWord" ItemsSource="{Binding BannWords}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel>
+                        <!--Word - это свойство (не поле!) класса BannWord. И в этом свойстве как раз прописано OnPropertyChanged("Word") -->
+                        <TextBlock Text="{Binding Word}" FontSize="16" />
+                    </StackPanel>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+
+        <!--AddCommand, EditCommand, DeleteCommand см. в ApplicationViewModel.cs -->
+        <StackPanel Grid.Row="1" Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center">
+            <!--!!!!!!! Без добавления команды CommandParameter="{Binding RelativeSource={RelativeSource Self}}" метод 
+            AddCommand не увидит отправителя (конопка с именем Name ="AddLeft" в нашем случае), то есть не поймёт, кто подписался на него!!!-->
+            <!--Если вы хотите передавать другие параметры или данные в команду, вы можете использовать CommandParameter, например:
+                <Button Content="Add" Command="{Binding AddCommand}" CommandParameter="SomeValue" />-->
+                <Button Name ="AddLeft" Content="Добавить" Margin="10" Padding="3" Command="{Binding AddCommand}"  CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+            <!-- Кнопки биндятся к левому листбоксу usersListApp -->
+            <Button Content="Изменить" Margin="10" Command="{Binding EditCommand}"
+                CommandParameter="{Binding ElementName=usersListApp, Path=SelectedItem}"  />
+            <Button Content="Удалить" Margin="10" Command="{Binding DeleteCommand}"
+                CommandParameter="{Binding ElementName=usersListApp, Path=SelectedItem}"  />
+        </StackPanel>
+
+        <!--AddCommand, EditCommand, DeleteCommand см. в ApplicationViewModel.cs -->
+        <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Center">
+            <!--!!!!!!! Без добавления команды CommandParameter="{Binding RelativeSource={RelativeSource Self}}" метод 
+            AddCommand не увидит отправителя (конопка с именем Name ="AddRight" в нашем случае), то есть не поймёт, кто подписался на него!!!-->
+            <Button Name ="AddRight" Content="Добавить" Margin="10" Padding="3" Command="{Binding AddCommand}"  CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
+            <!-- Кнопки биндятся к правому листбоксу usersListWord -->
+            <Button Content="Изменить" Margin="10" Command="{Binding EditCommand}"
+                CommandParameter="{Binding ElementName=usersListWord, Path=SelectedItem}"  />
+            <Button Content="Удалить" Margin="10" Command="{Binding DeleteCommand}"
+                CommandParameter="{Binding ElementName=usersListWord, Path=SelectedItem}"  />
+        </StackPanel>
+
+    </Grid>
+</Window>

@@ -117,8 +117,25 @@ namespace ProcessWatcher
         {
 
             Banned_Word_App Banned_Word = new Banned_Word_App();
-            Banned_Word.Show(); // Открывает окно немодально
+            Banned_Word.Show(); // Открывает окно для ввода запрещённых слов и приложений
 
+        }
+
+        private void MyComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // Получаем выбранный элемент
+            ComboBoxItem selectedItem = (ComboBoxItem)MyComboBox.SelectedItem;
+
+            if (selectedItem != null)
+            {
+                // Получаем текст выбранного элемента
+                // string selectedText = selectedItem.Content.ToString();
+
+                if (selectedItem.Content.ToString() == "Модерирование") _processWatcher.SetFlagModer = true;
+                else _processWatcher.SetFlagModer = false;
+
+
+            }
         }
 
 

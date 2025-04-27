@@ -21,11 +21,18 @@ namespace ProcessWatcher
         private ManagementEventWatcher _watcher; // есть ещё ManagementObjectSearcher
 
         private bool _processFrameFlag = true;
+        static bool _processModerir = true;
 
         public bool SetFlag
         {
             get { return _processFrameFlag; }
             set { _processFrameFlag = value; }
+        }
+
+        public bool SetFlagModer
+        {
+            get { return _processModerir; }
+            set { _processModerir = value; }
         }
 
         public ObservableCollection<ProcessInfo> Processes { get; private set; }
@@ -82,7 +89,7 @@ namespace ProcessWatcher
 
                     string[] words = processName.Split('.'); // слабое место, так как могут быть имена приложений, содержащих точку уже то .exe, например Rider.Backend.exe
 
-                    if (ProcessBanned(words[0])) {  // проверяем, является ли запущенное оконное приложение запрещённым
+                    if (ProcessBanned(words[0]) && _processModerir) {  // проверяем, является ли запущенное оконное приложение запрещённым
 
                         File.AppendAllText(ProcessKillFile, processName + ", " + DateTime.Now.ToString("yyyy.MM.dd_HH.mm.ss") + Environment.NewLine);
                         App.Current.Dispatcher.Invoke(() =>
@@ -239,7 +246,7 @@ namespace ProcessWatcher
                                 foreach (var process in processes)
                                 {
                                     // Завершаем процесс
-                                    process.Kill();
+                                    if(_processModerir) process.Kill();
                                 }
                                 return true;
                             }

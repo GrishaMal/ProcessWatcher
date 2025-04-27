@@ -9,8 +9,8 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="10*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="7*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" Margin="2">
@@ -25,13 +25,21 @@
             </Grid>
 
             <Grid Grid.Column="1">
-
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <Grid Grid.Column="0">
-                    <RadioButton x:Name="Option1" Content="Только оконные" GroupName="Options" Checked="RadioButton_Checked"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <RadioButton Grid.Row="0" x:Name="Option1" Content="Только оконные" GroupName="Options" Checked="RadioButton_Checked"/>
+                    <!-- Добавляем ComboBox -->
+                    <ComboBox Grid.Row="1" x:Name="MyComboBox" Margin="10" SelectionChanged="MyComboBox_SelectionChanged">
+                        <ComboBoxItem Content="Модерирование"/>
+                        <ComboBoxItem Content="Статистика"/>
+                    </ComboBox>
                 </Grid>
                 <Grid Grid.Column="1">
                     <RadioButton x:Name="Option2" Content="Все приложения" GroupName="Options" Checked="RadioButton_Checked"/>
